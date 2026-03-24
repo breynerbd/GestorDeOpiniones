@@ -20,7 +20,7 @@
   - Cifrado de contraseñas con bcryptjs
 
 - 📝 **Gestión de Publicaciones**:
-  - Crear nuevas publicaciones con título, contenido e imagen
+  - Crear nuevas publicaciones con título y contenido
   - Visualización de todas las publicaciones en orden cronológico inverso
   - Edición de publicaciones propias
   - Eliminación de publicaciones propias
@@ -32,8 +32,6 @@
   - Eliminar comentarios propios
 
 - 🛡️ **Seguridad y Rendimiento**:
-  - Protección contra ataques CSRF con helmet
-  - Limitación de peticiones (rate limiting)
   - Validación de datos con express-validator
   - Manejo de errores centralizado
   - Logs de peticiones con morgan
@@ -98,7 +96,6 @@ GestorDeOpiniones/
 
 - **Node.js** 20.x o superior
 - **MongoDB** instalado y corriendo
-- **Cloudinary** cuenta (para subir imágenes)
 
 ### 1. Configurar Variables de Entorno
 
@@ -106,11 +103,9 @@ Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 
 ```env
 PORT=3006
-MONGODB_URI=mongodb://localhost:27017/blogkinal
-JWT_SECRET=tu_secreto_jwt_muy_seguro
-CLOUDINARY_CLOUD_NAME=tu_cloud_name
-CLOUDINARY_API_KEY=tu_api_key
-CLOUDINARY_API_SECRET=tu_api_secret
+NODE_ENV = development
+URL_MONGODB = mongodb://localhost:27017/blogKinal
+JWT_SECRET=MiPalabraSecretaSuperSegura123
 ```
 
 ### 2. Instalar Dependencias
@@ -129,11 +124,11 @@ npm install
 
 ```bash
 # Iniciar el servidor en modo desarrollo
-cd GestorDeOpiniones/src
-npm run dev
+cd GestorDeOpiniones/
+node index.js
 ```
 
-El servidor se iniciará en `http://localhost:3006`
+El servidor se iniciará en `http://localhost:3006/blogKinal/v1`
 
 ### 4. Ejecutar el Frontend
 
@@ -156,47 +151,34 @@ El frontend estará disponible en `http://localhost:5173`
 5. **Comentar** - Dejar opiniones en las publicaciones
 6. **Editar/Eliminar** - Gestionar propias publicaciones y comentarios
 
-### Endpoints Disponibles
+## 🚀 API Endpoints
 
-#### Autenticación
+URL Base en `http://localhost:3006/blogKinal/v1`
 
-- `POST /auth/register` - Registrar nuevo usuario
-- `POST /auth/login` - Iniciar sesión
+### 🔐 Autenticación
+| Método | Endpoint | Descripción | Auth |
+| :--- | :--- | :--- | :---: |
+| `POST` | `/users` | Registrar un nuevo usuario | ❌ |
+| `POST` | `/login/login` | Iniciar sesión y obtener token | ❌ |
 
-#### Publicaciones
+### 📝 Publicaciones
+| Método | Endpoint | Descripción | Auth |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/publications` | Obtener todas las publicaciones | 🔑 |
+| `POST` | `/publications` | Crear una nueva publicación | 🔑 |
+| `PUT` | `/publications/:id` | Actualizar una publicación propia | 🔑 |
+| `DELETE` | `/publications/:id` | Eliminar una publicación propia | 🔑 |
 
-- `GET /publications` - Obtener todas las publicaciones
-- `GET /publications/:id` - Obtener publicación por ID
-- `POST /publications` - Crear nueva publicación
-- `PUT /publications/:id` - Actualizar publicación
-- `DELETE /publications/:id` - Eliminar publicación
-
-#### Comentarios
-
-- `GET /comments/:publicationId` - Obtener comentarios de una publicación
-- `POST /comments` - Crear un comentario
-- `PUT /comments/:id` - Actualizar un comentario
-- `DELETE /comments/:id` - Eliminar un comentario
+### 💬 Comentarios
+| Método | Endpoint | Descripción | Auth |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/comments` | Obtener todos los comentarios | 🔑 |
+| `GET` | `/comments/mycomments` | Obtener mis comentarios | 🔑 |
+| `GET` | `/comments/:publicationId` | Ver comentarios de una publicación | 🔑 |
+| `POST` | `/comments` | Crear un nuevo comentario | 🔑 |
+| `PUT` | `/comments/:id` | Actualizar un comentario propio | 🔑 |
+| `DELETE` | `/comments/:id` | Eliminar un comentario propio | 🔑 |
 
 ## 🔐 Consideraciones de Seguridad
 
-- Las contraseñas se cifran con bcryptjs
-- Los tokens JWT tienen expiración corta
-- Se implementa rate limiting para prevenir abusos
-- Helmet protege contra vulnerabilidades comunes
-- Las rutas privadas requieren token de autenticación
-- Validación de datos en todos los endpoints
-
-## 📊 Métricas del Proyecto
-
-- **Líneas de Código**: ~500+ (frontend + backend)
-- **Modelos de Base de Datos**: 3 (User, Publication, Comment)
-- **Middlewares**: 5+ especializados
-- **Endpoints**: 15+ disponibles
-- **Tecnologías**: 10+ frameworks y librerías
-
-## 👥 Autores
-
-Este proyecto fue desarrollado por:
-
-- **Brey
+- En todas las peticiones agregar en el apartado de Headers una Key `x-auth-token` con todo el token dado en el Login.
