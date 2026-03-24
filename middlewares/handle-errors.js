@@ -2,14 +2,10 @@ export const errorHandler = (err, req, res, next) => {
     console.error(`Error in Admin Server: ${err.message}`);
     console.error(`Stack trace: ${err.stack}`);
     console.error(`Request: ${req.method} ${req.path}`);
-
-    // Verifica si res es un objeto válido
     if (!res || typeof res.status !== 'function') {
         console.error('res no es un objeto válido');
-        return next(err);  // Si no es válido, pasa el error a otro middleware
+        return next(err);
     }
-
-    // Error de validación de Mongoose
     if (err.name === 'ValidationError') {
         const errors = Object.values(err.errors).map((error) => ({
             field: error.path,
@@ -23,7 +19,6 @@ export const errorHandler = (err, req, res, next) => {
         });
     }
 
-    // Error de duplicado de Mongoose
     if (err.code === 11000) {
         const field = Object.keys(err.keyValue)[0];
         return res.status(400).json({
@@ -33,7 +28,6 @@ export const errorHandler = (err, req, res, next) => {
         });
     }
 
-    // Error de cast de Mongoose (ID inválido)
     if (err.name === 'CastError') {
         return res.status(400).json({
             success: false,
@@ -42,7 +36,6 @@ export const errorHandler = (err, req, res, next) => {
         });
     }
 
-    // JWT errors
     if (err.name === 'JsonWebTokenError') {
         return res.status(401).json({
             success: false,
@@ -59,7 +52,6 @@ export const errorHandler = (err, req, res, next) => {
         });
     }
 
-    // Error personalizado con status
     if (err.statusCode) {
         return res.status(err.statusCode).json({
             success: false,
@@ -68,7 +60,6 @@ export const errorHandler = (err, req, res, next) => {
         });
     }
 
-    // Error por defecto del servidor
     return res.status(500).json({
         success: false,
         message: 'Error interno del servidor',

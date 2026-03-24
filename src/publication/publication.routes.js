@@ -1,12 +1,12 @@
-// src/publication/publication.routes.js
-
 import { Router } from 'express';
-import { createPublication, getPublications } from './publication.controller.js';
-import { authenticate } from '../../middlewares/authenticate.js';  // Suponiendo que tienes un middleware de autenticación
+import { createPublication, getPublications, updatePublication, deletePublication } from './publication.controller.js';
+import { authenticate } from '../../middlewares/authenticate.js';
 
 const router = Router();
 
-router.post('/', authenticate, createPublication);  // Crear publicación
-router.get('/', getPublications);  // Obtener todas las publicaciones
+router.post('/', authenticate, createPublication);
+router.get('/', authenticate, getPublications);
+router.put('/:id', authenticate, updatePublication);
+router.delete('/:id', authenticate, deletePublication);
 
 export default router;

@@ -1,5 +1,3 @@
-// src/publication/publication.model.js
-
 import mongoose from 'mongoose';
 
 const PublicationSchema = new mongoose.Schema({

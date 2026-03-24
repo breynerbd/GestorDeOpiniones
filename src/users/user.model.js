@@ -10,7 +10,6 @@ const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
 }, { timestamps: true });
 
-// Método para comparar contraseña
 UserSchema.methods.comparePassword = function (password) {
     return bcrypt.compare(password, this.password);
 };

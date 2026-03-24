@@ -1,10 +1,8 @@
-// index.js
 import dotenv from 'dotenv';
-import { initServer } from './configs/app.js';  // Importamos la función para inicializar el servidor
+import { initServer } from './configs/app.js';
 import User from './src/users/user.model.js';
 import bcrypt from 'bcryptjs';
 
-// Configuración de variables de entorno
 dotenv.config();
 
 const createDefaultUser = async () => {
@@ -32,7 +30,6 @@ const createDefaultUser = async () => {
 
 createDefaultUser();
 
-// Errores no capturados
 process.on('uncaughtException', (error) => {
     console.log(error);
     process.exit(1);
@@ -43,6 +40,5 @@ process.on('unhandledRejection', (reason, promise) => {
     process.exit(1);
 });
 
-// Inicialización del servidor
 console.log('Iniciando servidor de KinalSport...');
-initServer();  // Llamamos a initServer para iniciar la aplicación
+initServer();  

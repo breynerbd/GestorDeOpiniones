@@ -1,12 +1,17 @@
-// src/comments/comment.routes.js
-
 import { Router } from 'express';
-import { createComment, getComments } from './comments.controller.js';
+import { createComment, getCommentsByPublication, updateComment, deleteComment, getComments, getMyComments } from './comments.controller.js';
 import { authenticate } from '../../middlewares/authenticate.js';
 
 const router = Router();
 
-router.post('/', authenticate, createComment);  // Crear comentario
-router.get('/', authenticate, getComments);  // Obtener todos los comentarios
+router.post('/', authenticate, createComment);
+
+router.get('/mycomments', authenticate, getMyComments);
+
+router.get('/', authenticate, getComments);
+router.get('/:publicationId', authenticate, getCommentsByPublication);
+
+router.put('/:id', authenticate, updateComment);
+router.delete('/:id', authenticate, deleteComment);
 
 export default router;

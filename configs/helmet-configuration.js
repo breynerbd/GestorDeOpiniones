@@ -14,13 +14,10 @@ export const helmetConfiguration = {
         },
     },
 
-    // HSTS desactivado por simplicidad (evita depender de er
     hsts: false,
-    // Cabeceras básicas y útiles para API
     frameguard: { action: 'deny' },
     noSniff: true,
     hidePoweredBy: true,
-    // Compatibilidad con Swagger UI y recursos embebidos
     crossOriginResourcePolicy: { policy: 'cross-origin' },
     crossOriginEmbedderPolicy: false,
 };
